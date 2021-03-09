@@ -1,48 +1,68 @@
-const genres = require("../data/genres.json");
+const mongoose = require("mongoose");
+const config = require("config");
+const { Genre } = require("../models/genre");
 
-const getAll = () => {
+// Connect to DB
+const connect = async () => {
+    try {
+        const res = await mongoose.connect(config.get("dbConfig.host"), {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+
+        if (res) console.log("Connected to MongoDB...");
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+// Function to get all documents from Genre Table
+const getAll = async () => {
+    const genres = await Genre.find().sort({ name: 1 });
     return genres;
 };
 
-const addGenre = (name) => {
-    const newGenre = {
-        id: genres.length + 1,
-        name: name,
-    };
-
-    genres.push(newGenre);
-    return newGenre;
+// Function to create a new document in Genre Table
+const createGenre = async (genre) => {
+    const newGenre = new Genre(genre);
+    try {
+        return await newGenre.save();
+    } catch (error) {
+        console.error(error);
+        return error.message;
+    }
 };
 
-const getOne = (id) => {
-    const genre = genres.find((g) => g.id === id);
-
-    return genre;
+// Function to Delete a document in Genre Table
+const deleteGenreById = async (id) => {
+    try {
+        return await Genre.findByIdAndDelete(id);
+    } catch (error) {
+        return error.reason.message;
+    }
 };
 
-const deleteOne = (id) => {
-    const genre = getOne(id);
-
-    if (!genre) return genre;
-
-    const index = genres.indexOf(genre);
-    genres.splice(index, 1);
-
-    return genre;
+// Function to GET Genre by ID
+const getGenreById = async (id) => {
+    try {
+        return await Genre.findById(id);
+    } catch (error) {
+        return error.reason.message;
+    }
 };
 
-const updateOne = (id, name) => {
-    const genre = getOne(id);
-
-    if (!genre) return genre;
-
-    genre.name = name;
-
-    return genre;
+// Function to Update Genre by ID
+const updateGenreById = async (id, updatedGenre) => {
+    try {
+        return await Genre.findByIdAndUpdate(id, updatedGenre, { new: true });
+    } catch (error) {
+        return error.reason.message;
+    }
 };
 
+module.exports.connect = connect;
 module.exports.getAll = getAll;
-module.exports.addGenre = addGenre;
-module.exports.getOne = getOne;
-module.exports.deleteOne = deleteOne;
-module.exports.updateOne = updateOne;
+module.exports.createGenre = createGenre;
+module.exports.deleteGenreById = deleteGenreById;
+module.exports.getGenreById = getGenreById;
+module.exports.updateGenreById = updateGenreById;

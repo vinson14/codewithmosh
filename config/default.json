@@ -1,0 +1,29 @@
+{
+    "dbConfig": {
+        "host": "mongodb://localhost/vidly"
+    },
+    "validation": {
+        "genre": {
+            "name": {
+                "minLength": 5,
+                "maxLength": 50
+            }
+        },
+        "customer": {
+            "name": {
+                "minLength": 3,
+                "maxLength": 100
+            },
+            "phone": {
+                "minLength": 8,
+                "maxLength": 15
+            }
+        },
+        "movie": {
+            "title": {
+                "minLength": 3,
+                "maxLength": 100
+            }
+        }
+    }
+}
