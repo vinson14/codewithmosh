@@ -27,5 +27,15 @@ const validateCreateCustomer = (customer) => {
     return schema.validate(customer);
 };
 
+const validateCreateRental = (rental) => {
+    const schema = Joi.object({
+        customer: Joi.string().required(),
+        movie: Joi.string().required(),
+    });
+
+    return schema.validate(rental);
+};
+
 module.exports.validateCreateGenre = validateCreateGenre;
 module.exports.validateCreateCustomer = validateCreateCustomer;
+module.exports.validateCreateRental = validateCreateRental;

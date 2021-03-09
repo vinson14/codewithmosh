@@ -5,6 +5,7 @@ const express = require("express");
 const genreRouter = require("./routes/genre");
 const customerRouter = require("./routes/customer");
 const movieRouter = require("./routes/movie");
+const rentalRouter = require("./routes/rental");
 
 // Local imports
 const genreDB = require("./utils/genreDB");
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use("/genres/api", genreRouter);
 app.use("/customers/api", customerRouter);
 app.use("/movies/api", movieRouter);
+app.use("/rentals/api", rentalRouter);
 
 // Start server
 const port = process.env.PORT || 3000;
