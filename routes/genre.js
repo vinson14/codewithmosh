@@ -4,6 +4,8 @@ const router = express.Router();
 // Local imports
 const genreDB = require("../utils/genreDB");
 const validation = require("../utils/validation");
+const auth = require("../middleware/auth");
+const admin = require("../middleware/admin");
 
 // Get request for all genres
 router.get("/", async (req, res) => {
@@ -11,7 +13,7 @@ router.get("/", async (req, res) => {
 });
 
 // Post request to create new genre
-router.post("/", async (req, res) => {
+router.post("/", [auth, admin], async (req, res) => {
     // Validate request data passed by user
     const { error } = validation.validateCreateGenre(req.body);
     // If data invalid, return error message to user

@@ -2,6 +2,7 @@
     "dbConfig": {
         "host": "mongodb://localhost/vidly"
     },
+    "jwtPrivateKey": "",
     "validation": {
         "genre": {
             "name": {

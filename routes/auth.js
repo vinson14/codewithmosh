@@ -1,10 +1,12 @@
 const _ = require("lodash");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const express = require("express");
 const router = express.Router();
 const { User, validateCreateUser } = require("../models/user");
 const mongoose = require("mongoose");
 const Joi = require("joi");
+const config = require("config");
 
 router.post("/", async (req, res) => {
     const { error } = validateAuthUser(req.body);
@@ -21,7 +23,7 @@ router.post("/", async (req, res) => {
     if (!validPassword)
         return res.status(400).send("Invalid email or password");
 
-    return res.send(true);
+    return res.send(user.getJWT());
 });
 
 const validateAuthUser = (user) => {

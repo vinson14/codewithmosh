@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const config = require("config");
 const Joi = require("joi");
+const jwt = require("jsonwebtoken");
 
 // Define Users Schema and create Mode
 const userSchema = new mongoose.Schema({
@@ -23,7 +24,18 @@ const userSchema = new mongoose.Schema({
         minLength: 10,
         maxLength: 1024,
     },
+    isAdmin: {
+        type: Boolean,
+        default: false,
+    },
 });
+
+userSchema.methods.getJWT = function () {
+    return jwt.sign(
+        { _id: this._id, isAdmin: this.isAdmin },
+        config.get("jwtPrivateKey")
+    );
+};
 
 const User = mongoose.model("User", userSchema);
 
